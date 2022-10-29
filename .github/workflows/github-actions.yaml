@@ -6,7 +6,7 @@ jobs:
  build-docker-image:
   runs-on: ubuntu-latest
   steps:
-   - run: docker build -t cluboard-app-image .
+   - run: docker-compose -f docker-compose.yml build
  push-docker-image-to-dockerhub:
   runs-on: ubuntu-latest
   steps:
