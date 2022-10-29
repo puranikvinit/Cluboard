@@ -3,19 +3,26 @@ name: build-and-push-images-to-hub
 on: [push]
 
 jobs:
- build-docker-image:
+ build-docker-image-and-push:
   runs-on: ubuntu-latest
   steps:
-   - run: docker-compose -f docker-compose.yml build
- push-docker-image-to-dockerhub:
-  runs-on: ubuntu-latest
-  steps:
-   -
-    name: Login To DockerHub
-    uses: docker/login-action@v2
-    with:
-     username: ${{"kvp933"}}
-     password: ${{"ShreeDurga21"}}
-   -
-    name: Push To DockerHub
-    run: "docker push kvp933.test_repo:cluboard-app-image"
+      -
+        name: Checkout 
+        uses: actions/checkout@v3
+      -
+        name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      -
+        name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/cluboard_test_image_push:latest
