@@ -1,0 +1,21 @@
+name: build-and-push-images-to-hub
+
+on: [push]
+
+jobs:
+ build-docker-image:
+  runs-on: ubuntu-latest
+  steps:
+   - run: docker build -t cluboard-app-image .
+ push-docker-image-to-dockerhub:
+  runs-on: ubuntu-latest
+  steps:
+   -
+    name: Login To DockerHub
+    uses: docker/login-action@v2
+    with:
+     username: ${{kvp933}}
+     password: ${{ShreeDurga21}}
+   -
+    name: Push To DockerHub
+    run: "docker push kvp933.test_repo:cluboard-app-image"
